@@ -1,13 +1,10 @@
-import { PrismaClient } from "@prisma/client";
+import { prisma, } from "@lib/db";
 import { betterAuth } from "better-auth";
 import { prismaAdapter } from "better-auth/adapters/prisma";
-
-const prisma = new PrismaClient();
 
 export const auth = betterAuth({
 	secret: process.env.BETTER_AUTH_SECRET,
 	baseUrl: process.env.BETTER_AUTH_URL,
-	basePath: "/auth",
 	database: prismaAdapter(prisma, {
 		provider: "postgresql",
 	}),
@@ -15,3 +12,6 @@ export const auth = betterAuth({
 		enabled: true,
 	},
 });
+
+// Export default para o CLI do better-auth
+export default auth;

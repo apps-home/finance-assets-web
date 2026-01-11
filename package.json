@@ -16,6 +16,7 @@
 	},
 	"dependencies": {
 		"@finance-assets-web/env": "workspace:*",
+		"@lib/db": "workspace:*",
 		"dotenv": "catalog:",
 		"zod": "catalog:"
 	},
