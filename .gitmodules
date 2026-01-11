@@ -1,0 +1,4 @@
+[submodule "lib-db"]
+	url = https://github.com/apps-home/lib-db
+  branch = main
+	path = packages/lib-db

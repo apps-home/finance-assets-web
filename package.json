@@ -1,0 +1,29 @@
+{
+	"name": "finance-assets-web",
+	"private": true,
+	"workspaces": [
+		"apps/*",
+		"packages/*"
+	],
+	"type": "module",
+	"scripts": {
+		"check": "biome check --write .",
+		"dev": "pnpm -r dev",
+		"build": "pnpm -r build",
+		"check-types": "pnpm -r check-types",
+		"dev:native": "pnpm --filter native dev",
+		"dev:web": "pnpm --filter web dev"
+	},
+	"dependencies": {
+		"@finance-assets-web/env": "workspace:*",
+		"dotenv": "catalog:",
+		"zod": "catalog:"
+	},
+	"devDependencies": {
+		"@biomejs/biome": "^2.2.0",
+		"@finance-assets-web/config": "workspace:*",
+		"@types/node": "^20",
+		"typescript": "catalog:"
+	},
+	"packageManager": "pnpm@10.15.0"
+}
