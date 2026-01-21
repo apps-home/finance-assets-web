@@ -1,4 +1,5 @@
 import '@finance-assets-web/env/web'
+
 import type { NextConfig } from 'next'
 
 const nextConfig: NextConfig = {
@@ -6,6 +7,7 @@ const nextConfig: NextConfig = {
 	output: 'standalone',
 	typedRoutes: true,
 	reactCompiler: true,
+	transpilePackages: ['@t3-oss/env-nextjs', '@t3-oss/env-core'],
 	...(process.env.NODE_ENV === 'development' && {
 		allowedDevOrigins: [
 			'http://localhost:3000',
