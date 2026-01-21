@@ -1,6 +1,6 @@
-"use client";
+'use client'
 
-import Link from "next/link";
+import Link from 'next/link'
 
 const TITLE_TEXT = `
  ██████╗ ███████╗████████╗████████╗███████╗██████╗
@@ -16,7 +16,7 @@ const TITLE_TEXT = `
     ██║       ╚════██║   ██║   ██╔══██║██║     ██╔═██╗
     ██║       ███████║   ██║   ██║  ██║╚██████╗██║  ██╗
     ╚═╝       ╚══════╝   ╚═╝   ╚═╝  ╚═╝ ╚═════╝╚═╝  ╚═╝
- `;
+ `
 
 export default function Home() {
 	return (
@@ -26,8 +26,8 @@ export default function Home() {
 				<section className="rounded-lg border p-4">
 					<h2 className="mb-2 font-medium">API Status</h2>
 				</section>
-				<Link href={"/dashboard"}>Dashboard</Link>
+				<Link href={'/dashboard'}>Dashboard</Link>
 			</div>
 		</div>
-	);
+	)
 }

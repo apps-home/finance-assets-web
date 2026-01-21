@@ -1,11 +1,11 @@
-import type { LucideIcon } from "lucide-react";
+import type { LucideIcon } from 'lucide-react'
 
 interface StatCardProps {
-	title: string;
-	value: string;
-	icon: LucideIcon;
-	trend?: string;
-	trendUp?: boolean;
+	title: string
+	value: string
+	icon: LucideIcon
+	trend?: string
+	trendUp?: boolean
 }
 
 export function StatCard({
@@ -13,7 +13,7 @@ export function StatCard({
 	value,
 	icon: Icon,
 	trend,
-	trendUp,
+	trendUp
 }: StatCardProps) {
 	return (
 		<div className="rounded-xl border border-zinc-800 bg-zinc-900/50 p-6 backdrop-blur transition-all duration-300 hover:border-emerald-500/30">
@@ -23,7 +23,7 @@ export function StatCard({
 				</div>
 				{trend && (
 					<div
-						className={`text-sm ${trendUp ? "text-emerald-400" : "text-red-400"}`}
+						className={`text-sm ${trendUp ? 'text-emerald-400' : 'text-red-400'}`}
 					>
 						{trend}
 					</div>
@@ -32,5 +32,5 @@ export function StatCard({
 			<div className="mb-1 text-sm text-zinc-400">{title}</div>
 			<div className="text-2xl text-white">{value}</div>
 		</div>
-	);
+	)
 }

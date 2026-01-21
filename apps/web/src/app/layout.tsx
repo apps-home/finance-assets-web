@@ -1,25 +1,25 @@
-import type { Metadata } from "next";
+import type { Metadata } from 'next'
+import { Inter } from 'next/font/google'
 
-import { Inter } from "next/font/google";
+import Header from '@/components/header'
+import Providers from '@/components/providers'
 
-import Header from "@/components/header";
-import Providers from "@/components/providers";
-import "../index.css";
+import '../index.css'
 
 const inter = Inter({
-	variable: "--font-inter",
-	subsets: ["latin"],
-});
+	variable: '--font-inter',
+	subsets: ['latin']
+})
 
 export const metadata: Metadata = {
-	title: "finance-assets-web",
-	description: "finance-assets-web",
-};
+	title: 'finance-assets-web',
+	description: 'finance-assets-web'
+}
 
 export default function RootLayout({
-	children,
+	children
 }: Readonly<{
-	children: React.ReactNode;
+	children: React.ReactNode
 }>) {
 	return (
 		<html lang="en" suppressHydrationWarning>
@@ -32,5 +32,5 @@ export default function RootLayout({
 				</Providers>
 			</body>
 		</html>
-	);
+	)
 }

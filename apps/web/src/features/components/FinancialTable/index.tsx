@@ -1,68 +1,69 @@
-import { Edit, Save, X } from "lucide-react";
-import { useState } from "react";
-import { Button } from "@/components/ui/button";
+import { Edit, Save, X } from 'lucide-react'
+import { useState } from 'react'
+
+import { Button } from '@/components/ui/button'
 
 interface MonthData {
-	month: string;
-	reservaPais: number;
-	reservaIrmaos: number;
-	reservaLciCdb: number;
-	reservaRendaFixa: number;
-	fiis: number;
-	dolar: number;
+	month: string
+	reservaPais: number
+	reservaIrmaos: number
+	reservaLciCdb: number
+	reservaRendaFixa: number
+	fiis: number
+	dolar: number
 }
 
 interface FinancialTableProps {
-	data: MonthData[];
-	onUpdateData: (data: MonthData[]) => void;
+	data: MonthData[]
+	onUpdateData: (data: MonthData[]) => void
 }
 
 export function FinancialTable({ data, onUpdateData }: FinancialTableProps) {
 	const [editingCell, setEditingCell] = useState<{
-		row: number;
-		col: string;
-	} | null>(null);
-	const [tempValue, setTempValue] = useState("");
+		row: number
+		col: string
+	} | null>(null)
+	const [tempValue, setTempValue] = useState('')
 
 	const formatCurrency = (value: number) => {
-		return new Intl.NumberFormat("pt-BR", {
-			style: "currency",
-			currency: "BRL",
-		}).format(value);
-	};
+		return new Intl.NumberFormat('pt-BR', {
+			style: 'currency',
+			currency: 'BRL'
+		}).format(value)
+	}
 
 	const parseValue = (value: string): number => {
-		const cleaned = value.replace(/[^\d,.-]/g, "").replace(",", ".");
-		return Number.parseFloat(cleaned) || 0;
-	};
+		const cleaned = value.replace(/[^\d,.-]/g, '').replace(',', '.')
+		return Number.parseFloat(cleaned) || 0
+	}
 
 	const handleEdit = (
 		rowIndex: number,
 		column: string,
-		currentValue: number,
+		currentValue: number
 	) => {
-		setEditingCell({ row: rowIndex, col: column });
-		setTempValue(currentValue.toFixed(2).replace(".", ","));
-	};
+		setEditingCell({ row: rowIndex, col: column })
+		setTempValue(currentValue.toFixed(2).replace('.', ','))
+	}
 
 	const handleSave = () => {
 		if (editingCell) {
-			const newData = [...data];
-			const value = parseValue(tempValue);
+			const newData = [...data]
+			const value = parseValue(tempValue)
 			newData[editingCell.row] = {
 				...newData[editingCell.row],
-				[editingCell.col]: value,
-			};
-			onUpdateData(newData);
-			setEditingCell(null);
-			setTempValue("");
+				[editingCell.col]: value
+			}
+			onUpdateData(newData)
+			setEditingCell(null)
+			setTempValue('')
 		}
-	};
+	}
 
 	const handleCancel = () => {
-		setEditingCell(null);
-		setTempValue("");
-	};
+		setEditingCell(null)
+		setTempValue('')
+	}
 
 	const calculateTotal = (row: MonthData) => {
 		return (
@@ -72,12 +73,12 @@ export function FinancialTable({ data, onUpdateData }: FinancialTableProps) {
 			row.reservaRendaFixa +
 			row.fiis +
 			row.dolar
-		);
-	};
+		)
+	}
 
 	const renderCell = (rowIndex: number, column: string, value: number) => {
 		const isEditing =
-			editingCell?.row === rowIndex && editingCell?.col === column;
+			editingCell?.row === rowIndex && editingCell?.col === column
 
 		if (isEditing) {
 			return (
@@ -87,8 +88,8 @@ export function FinancialTable({ data, onUpdateData }: FinancialTableProps) {
 						value={tempValue}
 						onChange={(e) => setTempValue(e.target.value)}
 						onKeyDown={(e) => {
-							if (e.key === "Enter") handleSave();
-							if (e.key === "Escape") handleCancel();
+							if (e.key === 'Enter') handleSave()
+							if (e.key === 'Escape') handleCancel()
 						}}
 						className="w-full rounded border border-emerald-500 bg-zinc-800 px-2 py-1 text-emerald-400 focus:outline-none focus:ring-2 focus:ring-emerald-500"
 					/>
@@ -105,7 +106,7 @@ export function FinancialTable({ data, onUpdateData }: FinancialTableProps) {
 						<X className="size-4" />
 					</Button>
 				</div>
-			);
+			)
 		}
 
 		return (
@@ -118,8 +119,8 @@ export function FinancialTable({ data, onUpdateData }: FinancialTableProps) {
 					<Edit className="size-4" />
 				</Button>
 			</div>
-		);
-	};
+		)
+	}
 
 	return (
 		<div className="overflow-x-auto">
@@ -152,22 +153,22 @@ export function FinancialTable({ data, onUpdateData }: FinancialTableProps) {
 						>
 							<td className="px-4 py-4 text-zinc-300">{row.month}</td>
 							<td className="px-4 py-4 text-right text-zinc-200">
-								{renderCell(index, "reservaPais", row.reservaPais)}
+								{renderCell(index, 'reservaPais', row.reservaPais)}
 							</td>
 							<td className="px-4 py-4 text-right text-zinc-200">
-								{renderCell(index, "reservaIrmaos", row.reservaIrmaos)}
+								{renderCell(index, 'reservaIrmaos', row.reservaIrmaos)}
 							</td>
 							<td className="px-4 py-4 text-right text-zinc-200">
-								{renderCell(index, "reservaLciCdb", row.reservaLciCdb)}
+								{renderCell(index, 'reservaLciCdb', row.reservaLciCdb)}
 							</td>
 							<td className="px-4 py-4 text-right text-zinc-200">
-								{renderCell(index, "reservaRendaFixa", row.reservaRendaFixa)}
+								{renderCell(index, 'reservaRendaFixa', row.reservaRendaFixa)}
 							</td>
 							<td className="px-4 py-4 text-right text-zinc-200">
-								{renderCell(index, "fiis", row.fiis)}
+								{renderCell(index, 'fiis', row.fiis)}
 							</td>
 							<td className="px-4 py-4 text-right text-zinc-200">
-								{renderCell(index, "dolar", row.dolar)}
+								{renderCell(index, 'dolar', row.dolar)}
 							</td>
 							<td className="px-4 py-4 text-right text-emerald-400">
 								{formatCurrency(calculateTotal(row))}
@@ -177,5 +178,5 @@ export function FinancialTable({ data, onUpdateData }: FinancialTableProps) {
 				</tbody>
 			</table>
 		</div>
-	);
+	)
 }

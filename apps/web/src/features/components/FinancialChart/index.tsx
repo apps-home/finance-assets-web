@@ -6,22 +6,22 @@ import {
 	ResponsiveContainer,
 	Tooltip,
 	XAxis,
-	YAxis,
-} from "recharts";
+	YAxis
+} from 'recharts'
 
 interface ChartData {
-	month: string;
-	reservaPais: number;
-	reservaIrmaos: number;
-	reservaLciCdb: number;
-	reservaRendaFixa: number;
-	fiis: number;
-	dolar: number;
-	total: number;
+	month: string
+	reservaPais: number
+	reservaIrmaos: number
+	reservaLciCdb: number
+	reservaRendaFixa: number
+	fiis: number
+	dolar: number
+	total: number
 }
 
 interface FinancialChartProps {
-	data: ChartData[];
+	data: ChartData[]
 }
 
 export function FinancialChart({ data }: FinancialChartProps) {
@@ -37,28 +37,28 @@ export function FinancialChart({ data }: FinancialChartProps) {
 						</linearGradient>
 					</defs>
 					<CartesianGrid strokeDasharray="3 3" stroke="#27272a" />
-					<XAxis dataKey="month" stroke="#71717a" tick={{ fill: "#a1a1aa" }} />
+					<XAxis dataKey="month" stroke="#71717a" tick={{ fill: '#a1a1aa' }} />
 					<YAxis
 						stroke="#71717a"
-						tick={{ fill: "#a1a1aa" }}
+						tick={{ fill: '#a1a1aa' }}
 						tickFormatter={(value) => `R$ ${(value / 1000).toFixed(0)}k`}
 					/>
 					<Tooltip
 						contentStyle={{
-							backgroundColor: "#18181b",
-							border: "1px solid #27272a",
-							borderRadius: "8px",
-							color: "#fff",
+							backgroundColor: '#18181b',
+							border: '1px solid #27272a',
+							borderRadius: '8px',
+							color: '#fff'
 						}}
 						formatter={(value: number | undefined) => [
-							new Intl.NumberFormat("pt-BR", {
-								style: "currency",
-								currency: "BRL",
+							new Intl.NumberFormat('pt-BR', {
+								style: 'currency',
+								currency: 'BRL'
 							}).format(value ?? 0),
-							"",
+							''
 						]}
 					/>
-					<Legend wrapperStyle={{ color: "#a1a1aa" }} />
+					<Legend wrapperStyle={{ color: '#a1a1aa' }} />
 					<Area
 						type="monotone"
 						dataKey="total"
@@ -70,5 +70,5 @@ export function FinancialChart({ data }: FinancialChartProps) {
 				</AreaChart>
 			</ResponsiveContainer>
 		</div>
-	);
+	)
 }

@@ -8,6 +8,8 @@
 	"type": "module",
 	"scripts": {
 		"check": "biome check --write .",
+		"format": "biome format --write .",
+		"lint": "biome lint --write .",
 		"dev": "pnpm -r dev",
 		"build": "pnpm -r build",
 		"check-types": "pnpm -r check-types",
@@ -21,9 +23,9 @@
 		"zod": "catalog:"
 	},
 	"devDependencies": {
-		"@biomejs/biome": "^2.2.0",
+		"@biomejs/biome": "^2.3.11",
 		"@finance-assets-web/config": "workspace:*",
-		"@types/node": "^20",
+		"@types/node": "^25.0.9",
 		"typescript": "catalog:"
 	},
 	"packageManager": "pnpm@10.15.0"
