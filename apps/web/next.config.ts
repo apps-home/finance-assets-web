@@ -5,7 +5,15 @@ const nextConfig: NextConfig = {
 	basePath: process.env.BASE_PATH || '',
 	output: 'standalone',
 	typedRoutes: true,
-	reactCompiler: true
+	reactCompiler: true,
+	...(process.env.NODE_ENV === 'development' && {
+		allowedDevOrigins: [
+			'http://localhost:3000',
+			'http://localhost:3001',
+			'http://10.0.2.124:3001',
+			'10.0.2.124'
+		]
+	})
 }
 
 export default nextConfig
