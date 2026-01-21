@@ -12,8 +12,8 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-	title: "finance-assets-web",
-	description: "finance-assets-web",
+	title: "Finance Assets",
+	description: "Finance Assets",
 };
 
 export default function RootLayout({

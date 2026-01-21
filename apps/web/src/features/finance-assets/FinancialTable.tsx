@@ -1,6 +1,6 @@
+import { Button } from "@/components/ui/button";
 import { Edit, Save, X } from "lucide-react";
 import { useState } from "react";
-import { Button } from "@/components/ui/button";
 
 interface MonthData {
 	month: string;
@@ -90,17 +90,21 @@ export function FinancialTable({ data, onUpdateData }: FinancialTableProps) {
 							if (e.key === "Enter") handleSave();
 							if (e.key === "Escape") handleCancel();
 						}}
-						className="w-full rounded border border-emerald-500 bg-zinc-800 px-2 py-1 text-emerald-400 focus:outline-none focus:ring-2 focus:ring-emerald-500"
+						className="w-full rounded border border-primary bg-input px-2 py-1 text-foreground focus:outline-none focus:ring-2 focus:ring-primary"
 					/>
 					<Button
 						onClick={handleSave}
-						className="text-emerald-400 hover:text-emerald-300"
+						variant="ghost"
+						size="icon"
+						className="h-8 w-8 text-primary hover:text-primary/80"
 					>
 						<Save className="size-4" />
 					</Button>
 					<Button
 						onClick={handleCancel}
-						className="text-red-400 hover:text-red-300"
+						variant="ghost"
+						size="icon"
+						className="h-8 w-8 text-destructive hover:text-destructive/80"
 					>
 						<X className="size-4" />
 					</Button>
@@ -113,7 +117,9 @@ export function FinancialTable({ data, onUpdateData }: FinancialTableProps) {
 				<span>{formatCurrency(value)}</span>
 				<Button
 					onClick={() => handleEdit(rowIndex, column, value)}
-					className="text-zinc-500 opacity-0 transition-opacity hover:text-emerald-400 group-hover:opacity-100"
+					variant="ghost"
+					size="icon"
+					className="h-8 w-8 text-muted-foreground opacity-0 transition-opacity hover:text-primary group-hover:opacity-100"
 				>
 					<Edit className="size-4" />
 				</Button>
@@ -125,51 +131,51 @@ export function FinancialTable({ data, onUpdateData }: FinancialTableProps) {
 		<div className="overflow-x-auto">
 			<table className="w-full">
 				<thead>
-					<tr className="border-zinc-800 border-b">
-						<th className="px-4 py-4 text-left text-zinc-400">Mês</th>
-						<th className="px-4 py-4 text-right text-zinc-400">
+					<tr className="border-b border-border">
+						<th className="px-4 py-4 text-left text-muted-foreground">Mês</th>
+						<th className="px-4 py-4 text-right text-muted-foreground">
 							Reserva (Pais)
 						</th>
-						<th className="px-4 py-4 text-right text-zinc-400">
+						<th className="px-4 py-4 text-right text-muted-foreground">
 							Reserva (Irmãos)
 						</th>
-						<th className="px-4 py-4 text-right text-zinc-400">
+						<th className="px-4 py-4 text-right text-muted-foreground">
 							Reserva (LCI e CDB)
 						</th>
-						<th className="px-4 py-4 text-right text-zinc-400">
+						<th className="px-4 py-4 text-right text-muted-foreground">
 							Reserva (Renda Fixa)
 						</th>
-						<th className="px-4 py-4 text-right text-zinc-400">FIIs</th>
-						<th className="px-4 py-4 text-right text-zinc-400">Dólar</th>
-						<th className="px-4 py-4 text-right text-emerald-400">Total</th>
+						<th className="px-4 py-4 text-right text-muted-foreground">FIIs</th>
+						<th className="px-4 py-4 text-right text-muted-foreground">Dólar</th>
+						<th className="px-4 py-4 text-right text-primary">Total</th>
 					</tr>
 				</thead>
 				<tbody>
 					{data.map((row, index) => (
 						<tr
 							key={row.month}
-							className="border-zinc-900 border-b transition-colors hover:bg-zinc-900/50"
+							className="border-b border-border transition-colors hover:bg-muted/50"
 						>
-							<td className="px-4 py-4 text-zinc-300">{row.month}</td>
-							<td className="px-4 py-4 text-right text-zinc-200">
+							<td className="px-4 py-4 text-foreground">{row.month}</td>
+							<td className="px-4 py-4 text-right text-muted-foreground">
 								{renderCell(index, "reservaPais", row.reservaPais)}
 							</td>
-							<td className="px-4 py-4 text-right text-zinc-200">
+							<td className="px-4 py-4 text-right text-muted-foreground">
 								{renderCell(index, "reservaIrmaos", row.reservaIrmaos)}
 							</td>
-							<td className="px-4 py-4 text-right text-zinc-200">
+							<td className="px-4 py-4 text-right text-muted-foreground">
 								{renderCell(index, "reservaLciCdb", row.reservaLciCdb)}
 							</td>
-							<td className="px-4 py-4 text-right text-zinc-200">
+							<td className="px-4 py-4 text-right text-muted-foreground">
 								{renderCell(index, "reservaRendaFixa", row.reservaRendaFixa)}
 							</td>
-							<td className="px-4 py-4 text-right text-zinc-200">
+							<td className="px-4 py-4 text-right text-muted-foreground">
 								{renderCell(index, "fiis", row.fiis)}
 							</td>
-							<td className="px-4 py-4 text-right text-zinc-200">
+							<td className="px-4 py-4 text-right text-muted-foreground">
 								{renderCell(index, "dolar", row.dolar)}
 							</td>
-							<td className="px-4 py-4 text-right text-emerald-400">
+							<td className="px-4 py-4 text-right text-primary font-medium">
 								{formatCurrency(calculateTotal(row))}
 							</td>
 						</tr>

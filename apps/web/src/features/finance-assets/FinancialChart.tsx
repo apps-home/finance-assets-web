@@ -26,29 +26,33 @@ interface FinancialChartProps {
 
 export function FinancialChart({ data }: FinancialChartProps) {
 	return (
-		<div className="rounded-xl border border-zinc-800 bg-zinc-900/50 p-6 backdrop-blur">
-			<h3 className="mb-6 text-white text-xl">Evolução Patrimonial</h3>
+		<div className="rounded-xl border border-border bg-card p-6 text-card-foreground shadow-sm">
+			<h3 className="mb-6 text-xl font-semibold">Evolução Patrimonial</h3>
 			<ResponsiveContainer width="100%" height={300}>
 				<AreaChart data={data}>
 					<defs>
 						<linearGradient id="colorTotal" x1="0" y1="0" x2="0" y2="1">
-							<stop offset="5%" stopColor="#10b981" stopOpacity={0.3} />
-							<stop offset="95%" stopColor="#10b981" stopOpacity={0} />
+							<stop offset="5%" stopColor="var(--primary)" stopOpacity={0.3} />
+							<stop offset="95%" stopColor="var(--primary)" stopOpacity={0} />
 						</linearGradient>
 					</defs>
-					<CartesianGrid strokeDasharray="3 3" stroke="#27272a" />
-					<XAxis dataKey="month" stroke="#71717a" tick={{ fill: "#a1a1aa" }} />
+					<CartesianGrid strokeDasharray="3 3" stroke="var(--border)" />
+					<XAxis
+						dataKey="month"
+						stroke="var(--muted-foreground)"
+						tick={{ fill: "var(--muted-foreground)" }}
+					/>
 					<YAxis
-						stroke="#71717a"
-						tick={{ fill: "#a1a1aa" }}
+						stroke="var(--muted-foreground)"
+						tick={{ fill: "var(--muted-foreground)" }}
 						tickFormatter={(value) => `R$ ${(value / 1000).toFixed(0)}k`}
 					/>
 					<Tooltip
 						contentStyle={{
-							backgroundColor: "#18181b",
-							border: "1px solid #27272a",
-							borderRadius: "8px",
-							color: "#fff",
+							backgroundColor: "var(--popover)",
+							borderColor: "var(--border)",
+							borderRadius: "var(--radius)",
+							color: "var(--popover-foreground)",
 						}}
 						formatter={(value: number | undefined) => [
 							new Intl.NumberFormat("pt-BR", {
@@ -58,11 +62,11 @@ export function FinancialChart({ data }: FinancialChartProps) {
 							"",
 						]}
 					/>
-					<Legend wrapperStyle={{ color: "#a1a1aa" }} />
+					<Legend wrapperStyle={{ color: "var(--muted-foreground)" }} />
 					<Area
 						type="monotone"
 						dataKey="total"
-						stroke="#10b981"
+						stroke="var(--primary)"
 						strokeWidth={2}
 						fill="url(#colorTotal)"
 						name="Total"

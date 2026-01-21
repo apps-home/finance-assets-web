@@ -1,140 +1,24 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
+import { CategoryBreakdown } from "@/features/finance-assets/CategoryBreakdown";
 import { Download, TrendingUp, Wallet } from "lucide-react";
 import { useMemo, useState } from "react";
-import { CategoryBreakdown } from "../../features/finance-assets/CategoryBreakdown";
 import { FinancialChart } from "../../features/finance-assets/FinancialChart";
 import { FinancialTable } from "../../features/finance-assets/FinancialTable";
 import { StatCard } from "../../features/finance-assets/StatCard";
+import type { MonthData } from "./page";
 
-interface MonthData {
-	month: string;
-	reservaPais: number;
-	reservaIrmaos: number;
-	reservaLciCdb: number;
-	reservaRendaFixa: number;
-	fiis: number;
-	dolar: number;
-}
-
-const initialData: MonthData[] = [
-	{
-		month: "Janeiro",
-		reservaPais: 14530.0,
-		reservaIrmaos: 0.0,
-		reservaLciCdb: 0.0,
-		reservaRendaFixa: 0.0,
-		fiis: 1200.0,
-		dolar: 4930.0,
-	},
-	{
-		month: "Fevereiro",
-		reservaPais: 9111.86,
-		reservaIrmaos: 0.0,
-		reservaLciCdb: 3000.0,
-		reservaRendaFixa: 4500.0,
-		fiis: 1268.34,
-		dolar: 4712.0,
-	},
-	{
-		month: "Março",
-		reservaPais: 9000.0,
-		reservaIrmaos: 0.0,
-		reservaLciCdb: 3030.0,
-		reservaRendaFixa: 5662.0,
-		fiis: 1280.0,
-		dolar: 4324.0,
-	},
-	{
-		month: "Abril",
-		reservaPais: 12579.0,
-		reservaIrmaos: 0.0,
-		reservaLciCdb: 3060.0,
-		reservaRendaFixa: 5710.0,
-		fiis: 1312.0,
-		dolar: 4459.0,
-	},
-	{
-		month: "Maio",
-		reservaPais: 12510.0,
-		reservaIrmaos: 0.0,
-		reservaLciCdb: 3097.0,
-		reservaRendaFixa: 5762.0,
-		fiis: 1343.0,
-		dolar: 4929.0,
-	},
-	{
-		month: "Junho",
-		reservaPais: 13190.0,
-		reservaIrmaos: 0.0,
-		reservaLciCdb: 3132.0,
-		reservaRendaFixa: 8520.0,
-		fiis: 1337.0,
-		dolar: 5340.0,
-	},
-	{
-		month: "Julho",
-		reservaPais: 13054.0,
-		reservaIrmaos: 0.0,
-		reservaLciCdb: 3175.0,
-		reservaRendaFixa: 9092.0,
-		fiis: 1345.0,
-		dolar: 5417.0,
-	},
-	{
-		month: "Agosto",
-		reservaPais: 13216.0,
-		reservaIrmaos: 0.0,
-		reservaLciCdb: 3215.0,
-		reservaRendaFixa: 9270.0,
-		fiis: 1348.0,
-		dolar: 5536.0,
-	},
-	{
-		month: "Setembro",
-		reservaPais: 10265.0,
-		reservaIrmaos: 0.0,
-		reservaLciCdb: 3265.0,
-		reservaRendaFixa: 11600.0,
-		fiis: 1340.0,
-		dolar: 5784.0,
-	},
-	{
-		month: "Outubro",
-		reservaPais: 10055.0,
-		reservaIrmaos: 0.0,
-		reservaLciCdb: 3308.0,
-		reservaRendaFixa: 10712.0,
-		fiis: 1362.0,
-		dolar: 5851.0,
-	},
-	{
-		month: "Novembro",
-		reservaPais: 10008.37,
-		reservaIrmaos: 642.0,
-		reservaLciCdb: 3342.58,
-		reservaRendaFixa: 11800.0,
-		fiis: 1343.38,
-		dolar: 5720.52,
-	},
-	{
-		month: "Dezembro",
-		reservaPais: 0.0,
-		reservaIrmaos: 0.0,
-		reservaLciCdb: 0.0,
-		reservaRendaFixa: 0.0,
-		fiis: 0.0,
-		dolar: 5723.97,
-	},
-];
-
-export default function App() {
+export default function DashboardClient({
+	initialData,
+}: {
+	initialData: MonthData[];
+}) {
 	const [data, setData] = useState<MonthData[]>(initialData);
 	const [selectedYear] = useState("2024");
 
 	const stats = useMemo(() => {
-		const latestMonth = data[data.length - 2]; // Dezembro tem valores zerados, usar Novembro
+		const latestMonth = data[data.length - 2];
 		const total =
 			latestMonth.reservaPais +
 			latestMonth.reservaIrmaos +
@@ -154,7 +38,6 @@ export default function App() {
 
 		const growth = ((total - firstTotal) / firstTotal) * 100;
 
-		// Calcular total por categoria em todo o ano
 		const totalReservas = data.reduce(
 			(sum, month) =>
 				sum +
@@ -196,32 +79,32 @@ export default function App() {
 			{
 				name: "Reserva (Pais)",
 				value: latestMonth.reservaPais,
-				color: "#10b981",
+				color: "var(--chart-1)",
 			},
 			{
 				name: "Reserva (Irmãos)",
 				value: latestMonth.reservaIrmaos,
-				color: "#3b82f6",
+				color: "var(--chart-2)",
 			},
 			{
 				name: "LCI e CDB",
 				value: latestMonth.reservaLciCdb,
-				color: "#8b5cf6",
+				color: "var(--chart-3)",
 			},
 			{
 				name: "Renda Fixa",
 				value: latestMonth.reservaRendaFixa,
-				color: "#f59e0b",
+				color: "var(--chart-4)",
 			},
 			{
 				name: "FIIs",
 				value: latestMonth.fiis,
-				color: "#ec4899",
+				color: "var(--chart-5)",
 			},
 			{
 				name: "Dólar",
 				value: latestMonth.dolar,
-				color: "#06b6d4",
+				color: "var(--chart-1)",
 			},
 		].filter((item) => item.value > 0);
 	}, [data]);
@@ -274,37 +157,29 @@ export default function App() {
 	};
 
 	return (
-		<div className="min-h-screen bg-gradient-to-br from-zinc-950 via-zinc-900 to-zinc-950">
-			{/* Header */}
-			<div className="border-zinc-800 border-b bg-zinc-900/50 backdrop-blur">
-				<div className="mx-auto max-w-7xl px-6 py-6">
-					<div className="flex items-center justify-between">
-						<div className="flex items-center gap-4">
-							<div className="rounded-xl bg-emerald-500/10 p-3">
-								<Wallet className="size-8 text-emerald-400" />
-							</div>
-							<div>
-								<h1 className="text-3xl text-white">Controle Patrimonial</h1>
-								<p className="text-zinc-400">
-									Gestão financeira {selectedYear}
-								</p>
-							</div>
+		<div className="min-h-screen bg-background p-6">
+			<div className="mx-auto max-w-7xl space-y-8">
+				<div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
+					<div className="flex items-center gap-4">
+						<div className="rounded-xl bg-primary/10 p-3">
+							<Wallet className="size-8 text-primary" />
 						</div>
-						<Button
-							onClick={exportData}
-							className="flex items-center gap-2 rounded-lg border border-emerald-500/30 bg-emerald-500/10 px-4 py-2 text-emerald-400 transition-all hover:bg-emerald-500/20"
-						>
-							<Download className="size-4" />
-							Exportar CSV
-						</Button>
+						<div>
+							<h1 className="font-bold text-3xl text-foreground">
+								Controle Patrimonial
+							</h1>
+							<p className="text-muted-foreground">
+								Gestão financeira {selectedYear}
+							</p>
+						</div>
 					</div>
+					<Button onClick={exportData} variant="default">
+						<Download className="size-4" />
+						Exportar CSV
+					</Button>
 				</div>
-			</div>
 
-			{/* Main Content */}
-			<div className="mx-auto max-w-7xl px-6 py-8">
-				{/* Stats Cards */}
-				<div className="mb-8 grid grid-cols-1 gap-6 md:grid-cols-3">
+				<div className="grid grid-cols-1 gap-6 md:grid-cols-3">
 					<StatCard
 						title="Patrimônio Total"
 						value={formatCurrency(stats.total)}
@@ -324,17 +199,15 @@ export default function App() {
 					/>
 				</div>
 
-				{/* Charts */}
-				<div className="mb-8 grid grid-cols-1 gap-6 lg:grid-cols-2">
+				<div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
 					<FinancialChart data={chartData} />
 					<CategoryBreakdown data={categoryData} />
 				</div>
 
-				{/* Table */}
-				<div className="rounded-xl border border-zinc-800 bg-zinc-900/50 p-6 backdrop-blur">
+				<div className="rounded-xl border border-border bg-card p-6 text-card-foreground shadow-sm">
 					<div className="mb-6">
-						<h2 className="text-2xl text-white">Detalhamento Mensal</h2>
-						<p className="mt-1 text-zinc-400">
+						<h2 className="font-semibold text-2xl">Detalhamento Mensal</h2>
+						<p className="mt-1 text-muted-foreground text-sm">
 							Clique no ícone de edição para alterar valores
 						</p>
 					</div>

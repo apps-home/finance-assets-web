@@ -21,9 +21,9 @@
 		"zod": "catalog:"
 	},
 	"devDependencies": {
-		"@biomejs/biome": "^2.2.0",
+		"@biomejs/biome": "^2.3.11",
 		"@finance-assets-web/config": "workspace:*",
-		"@types/node": "^20",
+		"@types/node": "^20.19.28",
 		"typescript": "catalog:"
 	},
 	"packageManager": "pnpm@10.15.0"
