@@ -6,7 +6,7 @@ export const env = createEnv({
 	server: {
 		BETTER_AUTH_SECRET: z.string().min(1, 'BETTER_AUTH_SECRET is required'),
 		BETTER_AUTH_URL: z.url(),
-		DATABASE_URL: z.url()
+		DATABASE_URL: z.url().optional()
 	},
 	client: {
 		NEXT_PUBLIC_SERVER_URL: z.url(),

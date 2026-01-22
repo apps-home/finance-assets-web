@@ -3,7 +3,6 @@ import { Inter } from 'next/font/google'
 
 import Header from '@/components/header'
 import Providers from '@/components/providers'
-
 import '../index.css'
 
 const inter = Inter({
@@ -12,7 +11,8 @@ const inter = Inter({
 })
 
 export const metadata: Metadata = {
-	title: 'Finance Assets'
+	title: 'Finance Assets',
+	description: 'Finance Assets'
 }
 
 export default function RootLayout({

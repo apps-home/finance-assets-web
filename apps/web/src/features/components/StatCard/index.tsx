@@ -16,21 +16,21 @@ export function StatCard({
 	trendUp
 }: StatCardProps) {
 	return (
-		<div className="rounded-xl border border-zinc-800 bg-zinc-900/50 p-6 backdrop-blur transition-all duration-300 hover:border-emerald-500/30">
+		<div className="rounded-xl border border-border bg-card p-6 text-card-foreground shadow-sm transition-all duration-300 hover:border-primary/30">
 			<div className="mb-4 flex items-center justify-between">
-				<div className="rounded-lg bg-emerald-500/10 p-3">
-					<Icon className="size-6 text-emerald-400" />
+				<div className="rounded-lg bg-primary/10 p-3">
+					<Icon className="size-6 text-primary" />
 				</div>
 				{trend && (
 					<div
-						className={`text-sm ${trendUp ? 'text-emerald-400' : 'text-red-400'}`}
+						className={`text-sm ${trendUp ? 'text-primary' : 'text-destructive'}`}
 					>
 						{trend}
 					</div>
 				)}
 			</div>
-			<div className="mb-1 text-sm text-zinc-400">{title}</div>
-			<div className="text-2xl text-white">{value}</div>
+			<div className="mb-1 text-muted-foreground text-sm">{title}</div>
+			<div className="font-bold text-2xl">{value}</div>
 		</div>
 	)
 }
