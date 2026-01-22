@@ -4,6 +4,7 @@ import { Download, TrendingUp, Wallet } from 'lucide-react'
 import { useMemo, useState } from 'react'
 
 import { Button } from '@/components/ui/button'
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { CategoryBreakdown } from '@/features/components/CategoryBreakdown'
 import { FinancialChart } from '@/features/components/FinancialChart'
 import { FinancialTable } from '@/features/components/FinancialTable'
@@ -175,10 +176,22 @@ export default function DashboardClient({
 							</p>
 						</div>
 					</div>
-					<Button onClick={exportData} variant="default">
-						<Download className="size-4" />
-						Exportar CSV
-					</Button>
+					<div className="flex items-center gap-6">
+						<Tabs defaultValue="2026">
+							<TabsList variant="line">
+								<TabsTrigger value="2026">2026</TabsTrigger>
+								<TabsTrigger value="2025">2025</TabsTrigger>
+								<TabsTrigger value="2024">2024</TabsTrigger>
+							</TabsList>
+							<TabsContent value="2026">{/* Seu conteúdo aqui */}</TabsContent>
+							<TabsContent value="2025">{/* Seu conteúdo aqui */}</TabsContent>
+							<TabsContent value="2024">{/* Seu conteúdo aqui */}</TabsContent>
+						</Tabs>
+						<Button onClick={exportData} variant="default">
+							<Download className="size-4" />
+							Exportar CSV
+						</Button>
+					</div>
 				</div>
 
 				<div className="grid grid-cols-1 gap-6 md:grid-cols-3">

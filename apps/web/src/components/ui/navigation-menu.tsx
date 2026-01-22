@@ -1,4 +1,5 @@
 import { NavigationMenu as NavigationMenuPrimitive } from '@base-ui/react/navigation-menu'
+import { Slot } from '@radix-ui/react-slot'
 import { cva } from 'class-variance-authority'
 import { ChevronDownIcon } from 'lucide-react'
 
@@ -124,10 +125,13 @@ function NavigationMenuPositioner({
 
 function NavigationMenuLink({
 	className,
+	asChild = false,
 	...props
-}: NavigationMenuPrimitive.Link.Props) {
+}: NavigationMenuPrimitive.Link.Props & { asChild?: boolean }) {
+	const Comp = asChild ? Slot : NavigationMenuPrimitive.Link
+
 	return (
-		<NavigationMenuPrimitive.Link
+		<Comp
 			data-slot="navigation-menu-link"
 			className={cn(
 				"flex items-center gap-2 in-data-[slot=navigation-menu-content]:rounded-none rounded-none p-2 text-xs outline-none transition-all hover:bg-muted focus:bg-muted focus-visible:outline-1 focus-visible:ring-1 focus-visible:ring-ring/50 data-active:bg-muted/50 data-active:focus:bg-muted data-active:hover:bg-muted [&_svg:not([class*='size-'])]:size-4",

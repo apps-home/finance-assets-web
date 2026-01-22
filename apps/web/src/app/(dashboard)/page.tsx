@@ -1,5 +1,3 @@
-'use client'
-
 import DashboardClient from './DashboardClient'
 
 export interface MonthData {
@@ -123,6 +121,6 @@ const initialData: MonthData[] = [
 	}
 ]
 
-export default function Dashboard() {
+export default async function Dashboard() {
 	return <DashboardClient initialData={initialData} />
 }

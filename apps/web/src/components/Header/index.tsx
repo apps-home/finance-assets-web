@@ -27,15 +27,14 @@ export default function Header() {
 					<NavigationMenu>
 						<NavigationMenuList>
 							<NavigationMenuItem>
-								<Link href="/" passHref>
-									<NavigationMenuLink
-										className={navigationMenuTriggerStyle({
-											className: 'hover:bg-transparent'
-										})}
-									>
-										Início
-									</NavigationMenuLink>
-								</Link>
+								<NavigationMenuLink
+									className={navigationMenuTriggerStyle({
+										className: 'hover:bg-transparent'
+									})}
+									asChild
+								>
+									<Link href="/">Início</Link>
+								</NavigationMenuLink>
 							</NavigationMenuItem>
 						</NavigationMenuList>
 					</NavigationMenu>
