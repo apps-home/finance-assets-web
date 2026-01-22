@@ -159,8 +159,8 @@ export default function DashboardClient({
 	}
 
 	return (
-		<div className="min-h-screen bg-background p-6">
-			<div className="mx-auto max-w-7xl space-y-8">
+		<div className="bg-background px-6 pt-4 pb-12">
+			<div className="mx-auto max-w-screen-2xl space-y-8">
 				<div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
 					<div className="flex items-center gap-4">
 						<div className="rounded-xl bg-primary/10 p-3">
