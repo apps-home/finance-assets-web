@@ -11,7 +11,7 @@ import {
 	navigationMenuTriggerStyle
 } from '@/components/ui/navigation-menu'
 
-import { ModeToggle } from './mode-toggle'
+import { ModeToggle } from '../ModeToggle'
 
 export default function Header() {
 	return (

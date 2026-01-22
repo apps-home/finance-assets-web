@@ -1,8 +1,8 @@
 import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
 
-import Header from '@/components/header'
-import Providers from '@/components/providers'
+import Header from '@/components/Header'
+import Providers from '@/providers/providers'
 import '../index.css'
 
 const inter = Inter({
