@@ -1,7 +1,7 @@
 'use client'
 
-import { useMutation } from '@tanstack/react-query'
 import { Wallet } from 'lucide-react'
+import { useRouter } from 'next/navigation'
 import { useState } from 'react'
 import { toast } from 'sonner'
 
@@ -17,49 +17,18 @@ import {
 import { Checkbox } from '@/components/ui/checkbox'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
-
-interface SignUpBody {
-	name: string
-	email: string
-	password: string
-}
-
-async function signUp(body: SignUpBody) {
-	const response = await fetch('/api/sign-up', {
-		method: 'POST',
-		headers: {
-			'Content-Type': 'application/json'
-		},
-		body: JSON.stringify(body)
-	})
-
-	if (!response.ok) {
-		const error = await response.json()
-		throw new Error(error.message || 'Erro ao criar conta')
-	}
-
-	return response.json()
-}
+import { signUp } from '@/shared/lib/auth-client'
 
 export default function SignUpPage() {
+	const router = useRouter()
 	const [name, setName] = useState('')
 	const [email, setEmail] = useState('')
 	const [password, setPassword] = useState('')
 	const [confirmPassword, setConfirmPassword] = useState('')
 	const [acceptTerms, setAcceptTerms] = useState(false)
+	const [isPending, setIsPending] = useState(false)
 
-	const mutation = useMutation({
-		mutationFn: signUp,
-		onSuccess: () => {
-			toast.success('Conta criada com sucesso!')
-			window.location.href = '/sign-in'
-		},
-		onError: (error: Error) => {
-			toast.error(error.message || 'Erro ao criar conta')
-		}
-	})
-
-	const handleSubmit = (e: React.FormEvent) => {
+	const handleSubmit = async (e: React.FormEvent) => {
 		e.preventDefault()
 
 		if (!name || !email || !password || !confirmPassword) {
@@ -82,11 +51,25 @@ export default function SignUpPage() {
 			return
 		}
 
-		mutation.mutate({
+		setIsPending(true)
+
+		const { data, error } = await signUp.email({
 			name,
 			email,
 			password
 		})
+
+		setIsPending(false)
+
+		if (error) {
+			toast.error(error.message || 'Erro ao criar conta')
+			return
+		}
+
+		if (data) {
+			toast.success('Conta criada com sucesso!')
+			router.push('/sign-in')
+		}
 	}
 
 	return (
@@ -105,7 +88,7 @@ export default function SignUpPage() {
 				</CardHeader>
 
 				<form onSubmit={handleSubmit}>
-					<CardContent className="space-y-4">
+					<CardContent className="space-y-4 py-4">
 						<div className="space-y-2">
 							<Label htmlFor="name">Nome completo</Label>
 							<Input
@@ -114,7 +97,7 @@ export default function SignUpPage() {
 								placeholder="Seu nome"
 								value={name}
 								onChange={(e) => setName(e.target.value)}
-								disabled={mutation.isPending}
+								disabled={isPending}
 							/>
 						</div>
 
@@ -126,7 +109,7 @@ export default function SignUpPage() {
 								placeholder="seu@email.com"
 								value={email}
 								onChange={(e) => setEmail(e.target.value)}
-								disabled={mutation.isPending}
+								disabled={isPending}
 							/>
 						</div>
 
@@ -138,7 +121,7 @@ export default function SignUpPage() {
 								placeholder="••••••••"
 								value={password}
 								onChange={(e) => setPassword(e.target.value)}
-								disabled={mutation.isPending}
+								disabled={isPending}
 							/>
 						</div>
 
@@ -150,7 +133,7 @@ export default function SignUpPage() {
 								placeholder="••••••••"
 								value={confirmPassword}
 								onChange={(e) => setConfirmPassword(e.target.value)}
-								disabled={mutation.isPending}
+								disabled={isPending}
 							/>
 						</div>
 
@@ -159,7 +142,7 @@ export default function SignUpPage() {
 								id="terms"
 								checked={acceptTerms}
 								onCheckedChange={(checked) => setAcceptTerms(checked === true)}
-								disabled={mutation.isPending}
+								disabled={isPending}
 							/>
 							<Label htmlFor="terms" className="cursor-pointer">
 								Aceito os{' '}
@@ -175,12 +158,8 @@ export default function SignUpPage() {
 					</CardContent>
 
 					<CardFooter className="flex flex-col gap-4">
-						<Button
-							type="submit"
-							className="w-full"
-							disabled={mutation.isPending}
-						>
-							{mutation.isPending ? 'Criando conta...' : 'Criar conta'}
+						<Button type="submit" className="w-full" disabled={isPending}>
+							{isPending ? 'Criando conta...' : 'Criar conta'}
 						</Button>
 
 						<p className="text-center text-muted-foreground text-xs">

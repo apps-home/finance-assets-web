@@ -1,6 +1,5 @@
 'use client'
 
-import { useMutation } from '@tanstack/react-query'
 import { Wallet } from 'lucide-react'
 import { useRouter } from 'next/navigation'
 import { useState } from 'react'
@@ -18,49 +17,16 @@ import {
 import { Checkbox } from '@/components/ui/checkbox'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
-
-interface SignInBody {
-	email: string
-	password: string
-	rememberMe?: boolean
-	callbackURL?: string
-}
-
-async function signIn(body: SignInBody) {
-	const response = await fetch('/api/sign-in', {
-		method: 'POST',
-		headers: {
-			'Content-Type': 'application/json'
-		},
-		body: JSON.stringify(body)
-	})
-
-	if (!response.ok) {
-		const error = await response.json()
-		throw new Error(error.message || 'Erro ao fazer login')
-	}
-
-	return response.json()
-}
+import { signIn } from '@/shared/lib/auth-client'
 
 export default function SignInPage() {
 	const router = useRouter()
 	const [email, setEmail] = useState('')
 	const [password, setPassword] = useState('')
 	const [rememberMe, setRememberMe] = useState(false)
+	const [isPending, setIsPending] = useState(false)
 
-	const mutation = useMutation({
-		mutationFn: signIn,
-		onSuccess: () => {
-			toast.success('Login realizado com sucesso!')
-			router.push('/')
-		},
-		onError: (error: Error) => {
-			toast.error(error.message || 'Erro ao fazer login')
-		}
-	})
-
-	const handleSubmit = (e: React.FormEvent) => {
+	const handleSubmit = async (e: React.FormEvent) => {
 		e.preventDefault()
 
 		if (!email || !password) {
@@ -68,11 +34,25 @@ export default function SignInPage() {
 			return
 		}
 
-		mutation.mutate({
+		setIsPending(true)
+
+		const { data, error } = await signIn.email({
 			email,
 			password,
 			rememberMe
 		})
+
+		setIsPending(false)
+
+		if (error) {
+			toast.error(error.message || 'Erro ao fazer login')
+			return
+		}
+
+		if (data) {
+			toast.success('Login realizado com sucesso!')
+			router.push('/')
+		}
 	}
 
 	return (
@@ -91,7 +71,7 @@ export default function SignInPage() {
 				</CardHeader>
 
 				<form onSubmit={handleSubmit}>
-					<CardContent className="space-y-4">
+					<CardContent className="space-y-4 py-4">
 						<div className="space-y-2">
 							<Label htmlFor="email">E-mail</Label>
 							<Input
@@ -100,7 +80,7 @@ export default function SignInPage() {
 								placeholder="seu@email.com"
 								value={email}
 								onChange={(e) => setEmail(e.target.value)}
-								disabled={mutation.isPending}
+								disabled={isPending}
 							/>
 						</div>
 
@@ -120,7 +100,7 @@ export default function SignInPage() {
 								placeholder="••••••••"
 								value={password}
 								onChange={(e) => setPassword(e.target.value)}
-								disabled={mutation.isPending}
+								disabled={isPending}
 							/>
 						</div>
 
@@ -129,7 +109,7 @@ export default function SignInPage() {
 								id="remember"
 								checked={rememberMe}
 								onCheckedChange={(checked) => setRememberMe(checked === true)}
-								disabled={mutation.isPending}
+								disabled={isPending}
 							/>
 							<Label htmlFor="remember" className="cursor-pointer">
 								Lembrar de mim
@@ -138,12 +118,8 @@ export default function SignInPage() {
 					</CardContent>
 
 					<CardFooter className="flex flex-col gap-4">
-						<Button
-							type="submit"
-							className="w-full"
-							disabled={mutation.isPending}
-						>
-							{mutation.isPending ? 'Entrando...' : 'Entrar'}
+						<Button type="submit" className="w-full" disabled={isPending}>
+							{isPending ? 'Entrando...' : 'Entrar'}
 						</Button>
 
 						<p className="text-center text-muted-foreground text-xs">

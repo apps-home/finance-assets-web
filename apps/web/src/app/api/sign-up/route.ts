@@ -18,8 +18,8 @@ export async function POST(req: NextRequest) {
 			name: body.name,
 			email: body.email,
 			password: body.password,
-			image: body.image || 'https://example.com/image.png',
-			callbackURL: body.callbackURL || 'https://example.com/callback'
+			// image: body.image || 'https://example.com/image.png',
+			// callbackURL: body.callbackURL || 'https://example.com/callback'
 		}
 	})
 

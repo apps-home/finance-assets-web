@@ -1,3 +1,7 @@
+import { headers } from 'next/headers'
+
+import auth from '@/shared/lib/auth'
+
 import DashboardClient from './DashboardClient'
 
 export interface MonthData {
@@ -122,5 +126,22 @@ const initialData: MonthData[] = [
 ]
 
 export default async function Dashboard() {
+	const requestHeaders = await headers()
+
+	// try {
+	// 	await fetch(`${env.NEXT_PUBLIC_BASE_URL}/api/session`, {
+	// 		headers: requestHeaders,
+	// 		method: 'GET'
+	// 	})
+	// } catch (error) {
+	// 	console.log(error)
+	// }
+
+	const session = await auth.api.getSession({
+		headers: requestHeaders
+	})
+
+	console.log(session)
+
 	return <DashboardClient initialData={initialData} />
 }
