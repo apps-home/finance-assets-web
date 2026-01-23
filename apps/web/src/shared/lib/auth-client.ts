@@ -1,6 +1,5 @@
 import { createAuthClient } from 'better-auth/react'
 
-// Use a URL base dinâmica para suportar acesso via localhost ou IP da rede
 const getBaseURL = () => {
 	if (typeof window !== 'undefined') {
 		return window.location.origin

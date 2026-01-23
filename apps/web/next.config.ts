@@ -14,7 +14,8 @@ const nextConfig: NextConfig = {
 			'http://localhost:3001',
 			'http://10.0.2.124:3001',
 			'10.0.2.124',
-			'192.168.0.9'
+			'192.168.0.9',
+			'local.dev.terraviva'
 		]
 	})
 }

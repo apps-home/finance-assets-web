@@ -12,6 +12,7 @@ import {
 } from '@/components/ui/navigation-menu'
 
 import { ModeToggle } from '../ModeToggle'
+import { ProfileMenu } from '../ProfileMenu.tsx'
 
 export default function Header() {
 	return (
@@ -43,6 +44,7 @@ export default function Header() {
 					<div className="w-full flex-1 md:w-auto md:flex-none" />
 					<nav className="flex items-center gap-2">
 						<ModeToggle />
+						<ProfileMenu />
 					</nav>
 				</div>
 			</div>

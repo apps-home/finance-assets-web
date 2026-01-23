@@ -10,7 +10,9 @@ export const auth = betterAuth({
 	trustedOrigins: [
 		'http://localhost:3001',
 		'http://127.0.0.1:3001',
-		'http://192.168.0.9:3001'
+		'http://192.168.0.9:3001',
+		'http://10.0.2.124:3001',
+		'http://local.dev.terraviva:3001'
 	],
 	database: prismaAdapter(prisma, {
 		provider: 'postgresql'

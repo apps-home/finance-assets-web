@@ -9,8 +9,7 @@ import { CategoryBreakdown } from '@/features/components/CategoryBreakdown'
 import { FinancialChart } from '@/features/components/FinancialChart'
 import { FinancialTable } from '@/features/components/FinancialTable'
 import { StatCard } from '@/features/components/StatCard'
-
-import type { MonthData } from './page'
+import type { MonthData } from '@/shared/utils/initialData'
 
 export default function DashboardClient({
 	initialData

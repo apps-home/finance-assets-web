@@ -1,4 +1,5 @@
 import { Menu as MenuPrimitive } from '@base-ui/react/menu'
+import { Slot } from '@radix-ui/react-slot'
 import { CheckIcon, ChevronRightIcon } from 'lucide-react'
 import type * as React from 'react'
 
@@ -12,8 +13,22 @@ function DropdownMenuPortal({ ...props }: MenuPrimitive.Portal.Props) {
 	return <MenuPrimitive.Portal data-slot="dropdown-menu-portal" {...props} />
 }
 
-function DropdownMenuTrigger({ ...props }: MenuPrimitive.Trigger.Props) {
-	return <MenuPrimitive.Trigger data-slot="dropdown-menu-trigger" {...props} />
+function DropdownMenuTrigger({
+	asChild,
+	className,
+	...props
+}: MenuPrimitive.Trigger.Props & {
+	asChild?: boolean
+}) {
+	const Comp = asChild ? Slot : MenuPrimitive.Trigger
+
+	return (
+		<Comp
+			data-slot="dropdown-menu-trigger"
+			className={cn(className)}
+			{...props}
+		/>
+	)
 }
 
 function DropdownMenuContent({
@@ -77,14 +92,18 @@ function DropdownMenuLabel({
 function DropdownMenuItem({
 	className,
 	inset,
+	asChild,
 	variant = 'default',
 	...props
 }: MenuPrimitive.Item.Props & {
 	inset?: boolean
+	asChild?: boolean
 	variant?: 'default' | 'destructive'
 }) {
+	const Comp = asChild ? Slot : MenuPrimitive.Item
+
 	return (
-		<MenuPrimitive.Item
+		<Comp
 			data-slot="dropdown-menu-item"
 			data-inset={inset}
 			data-variant={variant}

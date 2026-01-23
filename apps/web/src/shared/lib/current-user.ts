@@ -1,0 +1,15 @@
+import { headers } from 'next/headers'
+
+import { auth } from './auth'
+
+export async function getCurrentSession() {
+	const session = await auth.api.getSession({
+		headers: await headers()
+	})
+	return session
+}
+
+export async function getCurrentUser() {
+	const session = await getCurrentSession()
+	return session?.user
+}
