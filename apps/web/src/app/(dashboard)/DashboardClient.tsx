@@ -1,6 +1,12 @@
 'use client'
 
-import { Download, TrendingUp, Wallet } from 'lucide-react'
+import {
+	ArrowUpRightFromSquare,
+	Download,
+	TrendingUp,
+	Wallet
+} from 'lucide-react'
+import Link from 'next/link'
 import { useMemo, useState } from 'react'
 
 import { Button } from '@/components/ui/button'
@@ -219,11 +225,19 @@ export default function DashboardClient({
 				</div>
 
 				<div className="rounded-xl border border-border bg-card p-6 text-card-foreground shadow-sm">
-					<div className="mb-6">
-						<h2 className="font-semibold text-2xl">Detalhamento Mensal</h2>
-						<p className="mt-1 text-muted-foreground text-sm">
-							Clique no ícone de edição para alterar valores
-						</p>
+					<div className="flex items-center justify-between">
+						<div className="mb-8">
+							<h2 className="font-semibold text-2xl">Detalhamento Mensal</h2>
+							<p className="mt-1 text-muted-foreground text-sm">
+								Clique no ícone de edição para alterar valores
+							</p>
+						</div>
+						<Link href="/profile?tab=configuracoes">
+							<Button variant="default">
+								Criar Categoria
+								<ArrowUpRightFromSquare className="size-4" />
+							</Button>
+						</Link>
 					</div>
 					<FinancialTable data={data} onUpdateData={setData} />
 				</div>

@@ -1,5 +1,4 @@
 import { Menu as MenuPrimitive } from '@base-ui/react/menu'
-import { Slot } from '@radix-ui/react-slot'
 import { CheckIcon, ChevronRightIcon } from 'lucide-react'
 import type * as React from 'react'
 
@@ -14,16 +13,11 @@ function DropdownMenuPortal({ ...props }: MenuPrimitive.Portal.Props) {
 }
 
 function DropdownMenuTrigger({
-	asChild,
 	className,
 	...props
-}: MenuPrimitive.Trigger.Props & {
-	asChild?: boolean
-}) {
-	const Comp = asChild ? Slot : MenuPrimitive.Trigger
-
+}: MenuPrimitive.Trigger.Props) {
 	return (
-		<Comp
+		<MenuPrimitive.Trigger
 			data-slot="dropdown-menu-trigger"
 			className={cn(className)}
 			{...props}
@@ -92,23 +86,19 @@ function DropdownMenuLabel({
 function DropdownMenuItem({
 	className,
 	inset,
-	asChild,
 	variant = 'default',
 	...props
 }: MenuPrimitive.Item.Props & {
 	inset?: boolean
-	asChild?: boolean
 	variant?: 'default' | 'destructive'
 }) {
-	const Comp = asChild ? Slot : MenuPrimitive.Item
-
 	return (
-		<Comp
+		<MenuPrimitive.Item
 			data-slot="dropdown-menu-item"
 			data-inset={inset}
 			data-variant={variant}
 			className={cn(
-				"group/dropdown-menu-item relative flex cursor-default select-none items-center gap-2 rounded-sm px-2 py-2 text-xs outline-hidden focus:bg-accent focus:text-accent-foreground not-data-[variant=destructive]:focus:**:text-accent-foreground data-disabled:pointer-events-none data-inset:pl-8 data-[variant=destructive]:text-destructive data-disabled:opacity-50 data-[variant=destructive]:focus:bg-destructive/10 data-[variant=destructive]:focus:text-destructive dark:data-[variant=destructive]:focus:bg-destructive/20 [&_svg:not([class*='size-'])]:size-4 [&_svg]:pointer-events-none [&_svg]:shrink-0 data-[variant=destructive]:*:[svg]:text-destructive",
+				"group/dropdown-menu-item relative flex cursor-pointer select-none items-center gap-2 rounded-sm px-2 py-2 text-xs outline-hidden focus:bg-accent focus:text-accent-foreground not-data-[variant=destructive]:focus:**:text-accent-foreground data-disabled:pointer-events-none data-inset:pl-8 data-[variant=destructive]:text-destructive data-disabled:opacity-50 data-[variant=destructive]:focus:bg-destructive/10 data-[variant=destructive]:focus:text-destructive dark:data-[variant=destructive]:focus:bg-destructive/20 [&_svg:not([class*='size-'])]:size-4 [&_svg]:pointer-events-none [&_svg]:shrink-0 data-[variant=destructive]:*:[svg]:text-destructive",
 				className
 			)}
 			{...props}

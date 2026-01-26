@@ -179,7 +179,6 @@ export function FinancialChart({ data }: FinancialChartProps) {
 				</AreaChart>
 			</ResponsiveContainer>
 
-			{/* Custom Legend */}
 			<div className="mt-4 flex items-center justify-between border-border/50 border-t pt-4">
 				<div className="flex items-center gap-2">
 					<div
