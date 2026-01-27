@@ -9,7 +9,7 @@ export const metadata: Metadata = {
 	description: 'O serviço está temporariamente indisponível'
 }
 
-export default function MaintenancePage() {
+export default async function MaintenancePage() {
 	return (
 		<div className="flex min-h-screen flex-col items-center justify-center bg-background px-4">
 			<div className="text-center">
@@ -36,10 +36,6 @@ export default function MaintenancePage() {
 				</div>
 
 				<div className="flex flex-col items-center justify-center gap-4 sm:flex-row">
-					<Button onClick={() => window.location.reload()}>
-						<RotateCcw className="mr-2 h-4 w-4" />
-						Tentar novamente
-					</Button>
 					<Button variant="outline" asChild>
 						<Link href="/">
 							<Home className="mr-2 h-4 w-4" />

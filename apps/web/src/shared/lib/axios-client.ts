@@ -21,6 +21,7 @@ apiClient.interceptors.request.use(
 
 		if (typeof token === 'string') {
 			config.headers.Authorization = `Bearer ${token}`
+			config.headers['user-id'] = session.data?.user?.id
 		}
 
 		return config

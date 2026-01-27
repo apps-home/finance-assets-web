@@ -1,3 +1,5 @@
+'use client'
+
 import {
 	Area,
 	AreaChart,
@@ -10,13 +12,8 @@ import {
 
 interface ChartData {
 	month: string
-	reservaPais: number
-	reservaIrmaos: number
-	reservaLciCdb: number
-	reservaRendaFixa: number
-	fiis: number
-	dolar: number
 	total: number
+	[key: string]: string | number
 }
 
 interface FinancialChartProps {
@@ -71,11 +68,18 @@ function CustomTooltip({ active, payload, label }: CustomTooltipProps) {
 }
 
 export function FinancialChart({ data }: FinancialChartProps) {
-	// Calculate growth from first to last data point
+	if (!data || data.length === 0) return null
+
 	const firstValue = data[0]?.total ?? 0
 	const lastValue = data[data.length - 1]?.total ?? 0
+
 	const growth =
-		firstValue > 0 ? ((lastValue - firstValue) / firstValue) * 100 : 0
+		firstValue > 0
+			? ((lastValue - firstValue) / firstValue) * 100
+			: lastValue > 0
+				? 100
+				: 0
+
 	const isPositiveGrowth = growth >= 0
 
 	return (

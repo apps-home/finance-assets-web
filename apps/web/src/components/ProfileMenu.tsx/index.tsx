@@ -46,7 +46,7 @@ export function ProfileMenu() {
 					</DropdownMenuLabel>
 				</DropdownMenuGroup>
 				<DropdownMenuSeparator />
-				<DropdownMenuItem>
+				<DropdownMenuItem className="py-4">
 					<Link href="/profile" className="flex w-full items-center">
 						<User className="mr-2 h-4 w-4" />
 						<span>Perfil</span>
@@ -55,6 +55,7 @@ export function ProfileMenu() {
 				<DropdownMenuSeparator />
 				<DropdownMenuItem
 					variant="destructive"
+					className="py-4"
 					onClick={() => {
 						console.log('Lógica de logout aqui')
 					}}

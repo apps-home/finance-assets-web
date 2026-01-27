@@ -1,4 +1,3 @@
-// Types matching backend entity
 export interface Category {
 	id: string
 	name: string

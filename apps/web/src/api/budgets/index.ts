@@ -31,7 +31,13 @@ export async function getBudgetById(id: string): Promise<Budget> {
  * Cria um novo budget
  */
 export async function createBudget(data: CreateBudgetDTO): Promise<Budget> {
-	const response = await apiClient.post<Budget>(BASE_URL, data)
+	const response = await apiClient.post<Budget>(BASE_URL, {
+		categoryId: data.categoryId,
+		month: data.month,
+		year: data.year,
+		amount: data.amount,
+		exchangeRate: data.exchangeRate || 1
+	})
 	return response.data
 }
 

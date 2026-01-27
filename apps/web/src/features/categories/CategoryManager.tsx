@@ -37,6 +37,8 @@ import {
 	TableHeader,
 	TableRow
 } from '@/components/ui/table'
+import { createCategory, deleteCategory, listCategories, updateCategory } from '@/api/categories'
+import { useQuery } from '@tanstack/react-query'
 
 interface Category {
 	id: string
@@ -52,11 +54,16 @@ const CURRENCIES = [
 ]
 
 export function CategoryManager() {
-	const [categories, setCategories] = useState<Category[]>([
-		{ id: '1', name: 'Investimentos', currency: 'BRL' },
-		{ id: '2', name: 'Criptomoedas', currency: 'USD' },
-		{ id: '3', name: 'Ações', currency: 'BRL' }
-	])
+	
+	const {data: categoriesData} = useQuery({
+		queryKey: ['categories'],
+		queryFn: async () => {
+			const data = await listCategories()
+				return data
+		}	
+	})
+
+	const categories = categoriesData || []
 
 	const [isModalOpen, setIsModalOpen] = useState(false)
 	const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false)
@@ -83,30 +90,28 @@ export function CategoryManager() {
 		setIsDeleteModalOpen(true)
 	}
 
-	const handleSubmit = () => {
+	const handleSubmit = async () => {
 		if (!formData.name.trim()) {
 			toast.error('O nome da categoria é obrigatório')
 			return
 		}
 
 		if (editingCategory) {
-			// Editar categoria existente
-			setCategories((prev) =>
-				prev.map((cat) =>
-					cat.id === editingCategory.id
-						? { ...cat, name: formData.name, currency: formData.currency }
-						: cat
-				)
-			)
-			toast.success('Categoria atualizada com sucesso!')
-		} else {
-			// Criar nova categoria
-			const newCategory: Category = {
-				id: Date.now().toString(),
+			const updatedCategory = {
+				...editingCategory,
 				name: formData.name,
 				currency: formData.currency
 			}
-			setCategories((prev) => [...prev, newCategory])
+			await updateCategory(editingCategory.id, updatedCategory)
+
+			toast.success('Categoria atualizada com sucesso!')
+		} else {
+			const newCategory = {
+				name: formData.name,
+				currency: formData.currency
+			}
+
+			await createCategory(newCategory)
 			toast.success('Categoria criada com sucesso!')
 		}
 
@@ -115,11 +120,9 @@ export function CategoryManager() {
 		setEditingCategory(null)
 	}
 
-	const handleDelete = () => {
+	const handleDelete = async () => {
 		if (deletingCategory) {
-			setCategories((prev) =>
-				prev.filter((cat) => cat.id !== deletingCategory.id)
-			)
+			await deleteCategory(deletingCategory.id)
 			toast.success('Categoria removida com sucesso!')
 		}
 		setIsDeleteModalOpen(false)
@@ -164,7 +167,7 @@ export function CategoryManager() {
 								<TableRow>
 									<TableHead>Nome</TableHead>
 									<TableHead>Moeda</TableHead>
-									<TableHead className="w-[100px] text-right">Ações</TableHead>
+									<TableHead className="w-25 text-right">Ações</TableHead>
 								</TableRow>
 							</TableHeader>
 							<TableBody>

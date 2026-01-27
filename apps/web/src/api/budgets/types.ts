@@ -1,4 +1,3 @@
-// Types matching backend entity
 export interface Budget {
 	id: string
 	categoryId: string

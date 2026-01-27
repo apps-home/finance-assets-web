@@ -1,29 +1,35 @@
-import { Edit, Save, X } from 'lucide-react'
+import { Edit, Loader2, Save, X } from 'lucide-react'
 import { useState } from 'react'
 
+import type { CreateBudgetDTO } from '@/api/budgets/types'
+import type { MonthData } from '@/app/(application)/(dashboard)/page'
 import { Button } from '@/components/ui/button'
 
-interface MonthData {
-	month: string
-	reservaPais: number
-	reservaIrmaos: number
-	reservaLciCdb: number
-	reservaRendaFixa: number
-	fiis: number
-	dolar: number
+interface Category {
+	id: string
+	name: string
 }
 
 interface FinancialTableProps {
 	data: MonthData[]
-	onUpdateData: (data: MonthData[]) => void
+	categories: Category[]
+	year: number
+	onSaveCell: (dto: CreateBudgetDTO) => Promise<void>
 }
 
-export function FinancialTable({ data, onUpdateData }: FinancialTableProps) {
+export function FinancialTable({
+	data,
+	categories,
+	year,
+	onSaveCell
+}: FinancialTableProps) {
 	const [editingCell, setEditingCell] = useState<{
 		row: number
 		col: string
 	} | null>(null)
+
 	const [tempValue, setTempValue] = useState('')
+	const [isSaving, setIsSaving] = useState(false)
 
 	const formatCurrency = (value: number) => {
 		return new Intl.NumberFormat('pt-BR', {
@@ -39,24 +45,45 @@ export function FinancialTable({ data, onUpdateData }: FinancialTableProps) {
 
 	const handleEdit = (
 		rowIndex: number,
-		column: string,
+		columnName: string,
 		currentValue: number
 	) => {
-		setEditingCell({ row: rowIndex, col: column })
+		setEditingCell({ row: rowIndex, col: columnName })
 		setTempValue(currentValue.toFixed(2).replace('.', ','))
 	}
 
-	const handleSave = () => {
-		if (editingCell) {
-			const newData = [...data]
-			const value = parseValue(tempValue)
-			newData[editingCell.row] = {
-				...newData[editingCell.row],
-				[editingCell.col]: value
-			}
-			onUpdateData(newData)
+	const handleSave = async () => {
+		if (!editingCell) return
+
+		const category = categories.find((c) => c.name === editingCell.col)
+
+		if (!category) {
+			console.error('Categoria não encontrada para a coluna:', editingCell.col)
+			return
+		}
+
+		const amount = parseValue(tempValue)
+		const monthIndex = editingCell.row + 1
+
+		const dto: CreateBudgetDTO = {
+			categoryId: category.id,
+			month: monthIndex,
+			year: year,
+			amount: amount,
+			exchangeRate: null
+		}
+
+		try {
+			setIsSaving(true)
+
+			await onSaveCell(dto)
+
 			setEditingCell(null)
 			setTempValue('')
+		} catch (error) {
+			console.error('Erro ao salvar', error)
+		} finally {
+			setIsSaving(false)
 		}
 	}
 
@@ -66,19 +93,17 @@ export function FinancialTable({ data, onUpdateData }: FinancialTableProps) {
 	}
 
 	const calculateTotal = (row: MonthData) => {
-		return (
-			row.reservaPais +
-			row.reservaIrmaos +
-			row.reservaLciCdb +
-			row.reservaRendaFixa +
-			row.fiis +
-			row.dolar
-		)
+		return Object.keys(row).reduce((acc, key) => {
+			if (key === 'month' || key === 'monthIndex' || key === 'id') return acc
+			const value = row[key]
+			return acc + (typeof value === 'number' ? value : 0)
+		}, 0)
 	}
 
-	const renderCell = (rowIndex: number, column: string, value: number) => {
+	const renderCell = (rowIndex: number, columnName: string, value: unknown) => {
+		const numericValue = typeof value === 'number' ? value : 0
 		const isEditing =
-			editingCell?.row === rowIndex && editingCell?.col === column
+			editingCell?.row === rowIndex && editingCell?.col === columnName
 
 		if (isEditing) {
 			return (
@@ -86,6 +111,8 @@ export function FinancialTable({ data, onUpdateData }: FinancialTableProps) {
 					<input
 						type="text"
 						value={tempValue}
+						autoFocus
+						disabled={isSaving}
 						onChange={(e) => setTempValue(e.target.value)}
 						onKeyDown={(e) => {
 							if (e.key === 'Enter') handleSave()
@@ -99,7 +126,11 @@ export function FinancialTable({ data, onUpdateData }: FinancialTableProps) {
 						size="icon"
 						className="h-8 w-8 text-primary hover:text-primary/80"
 					>
-						<Save className="size-4" />
+						{isSaving ? (
+							<Loader2 className="size-4 animate-spin" />
+						) : (
+							<Save className="size-4" />
+						)}
 					</Button>
 					<Button
 						onClick={handleCancel}
@@ -114,10 +145,13 @@ export function FinancialTable({ data, onUpdateData }: FinancialTableProps) {
 		}
 
 		return (
-			<div className="group flex items-center justify-between">
-				<span>{formatCurrency(value)}</span>
+			<div
+				className="group flex items-center justify-between"
+				onClick={() => handleEdit(rowIndex, columnName, numericValue)}
+			>
+				<span>{formatCurrency(numericValue)}</span>
 				<Button
-					onClick={() => handleEdit(rowIndex, column, value)}
+					onClick={() => handleEdit(rowIndex, columnName, numericValue)}
 					variant="ghost"
 					size="icon"
 					className="h-8 w-8 text-muted-foreground opacity-0 transition-opacity hover:text-primary group-hover:opacity-100"
@@ -134,22 +168,14 @@ export function FinancialTable({ data, onUpdateData }: FinancialTableProps) {
 				<thead>
 					<tr className="border-border border-b">
 						<th className="px-4 py-4 text-left text-muted-foreground">Mês</th>
-						<th className="px-4 py-4 text-right text-muted-foreground">
-							Reserva (Pais)
-						</th>
-						<th className="px-4 py-4 text-right text-muted-foreground">
-							Reserva (Irmãos)
-						</th>
-						<th className="px-4 py-4 text-right text-muted-foreground">
-							Reserva (LCI e CDB)
-						</th>
-						<th className="px-4 py-4 text-right text-muted-foreground">
-							Reserva (Renda Fixa)
-						</th>
-						<th className="px-4 py-4 text-right text-muted-foreground">FIIs</th>
-						<th className="px-4 py-4 text-right text-muted-foreground">
-							Dólar
-						</th>
+						{categories.map((cat) => (
+							<th
+								key={cat.id}
+								className="px-4 py-4 text-left font-medium text-muted-foreground"
+							>
+								{cat.name}
+							</th>
+						))}
 						<th className="px-4 py-4 text-right text-primary">Total</th>
 					</tr>
 				</thead>
@@ -160,24 +186,14 @@ export function FinancialTable({ data, onUpdateData }: FinancialTableProps) {
 							className="border-border border-b transition-colors hover:bg-muted/50"
 						>
 							<td className="px-4 py-4 text-foreground">{row.month}</td>
-							<td className="px-4 py-4 text-right text-muted-foreground">
-								{renderCell(index, 'reservaPais', row.reservaPais)}
-							</td>
-							<td className="px-4 py-4 text-right text-muted-foreground">
-								{renderCell(index, 'reservaIrmaos', row.reservaIrmaos)}
-							</td>
-							<td className="px-4 py-4 text-right text-muted-foreground">
-								{renderCell(index, 'reservaLciCdb', row.reservaLciCdb)}
-							</td>
-							<td className="px-4 py-4 text-right text-muted-foreground">
-								{renderCell(index, 'reservaRendaFixa', row.reservaRendaFixa)}
-							</td>
-							<td className="px-4 py-4 text-right text-muted-foreground">
-								{renderCell(index, 'fiis', row.fiis)}
-							</td>
-							<td className="px-4 py-4 text-right text-muted-foreground">
-								{renderCell(index, 'dolar', row.dolar)}
-							</td>
+							{categories.map((cat) => (
+								<td
+									key={`${row.month}-${cat.id}`}
+									className="px-4 py-4 text-right text-muted-foreground"
+								>
+									{renderCell(index, cat.name, row[cat.name])}
+								</td>
+							))}
 							<td className="px-4 py-4 text-right font-medium text-primary">
 								{formatCurrency(calculateTotal(row))}
 							</td>
