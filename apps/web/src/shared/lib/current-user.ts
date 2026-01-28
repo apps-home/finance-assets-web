@@ -2,10 +2,10 @@ import 'server-only'
 
 import { headers } from 'next/headers'
 
-import { auth } from './auth'
+import { getSession } from './auth'
 
 export async function getCurrentSession() {
-	const session = await auth.api.getSession({
+	const session = await getSession({
 		headers: await headers()
 	})
 	return session

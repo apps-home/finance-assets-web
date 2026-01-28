@@ -64,7 +64,7 @@ export function FinancialTable({
 
 		const amount = parseValue(tempValue)
 		const monthIndex = editingCell.row + 1
-
+		console.log(category)
 		const dto: CreateBudgetDTO = {
 			categoryId: category.id,
 			month: monthIndex,

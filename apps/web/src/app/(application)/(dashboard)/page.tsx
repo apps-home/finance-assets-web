@@ -1,7 +1,3 @@
-import { redirect } from 'next/navigation'
-
-import { getCurrentSession } from '@/shared/lib/current-user'
-
 import DashboardClient from './DashboardClient'
 
 export interface MonthData {
@@ -11,11 +7,5 @@ export interface MonthData {
 }
 
 export default async function DashboardPage() {
-	const session = await getCurrentSession()
-
-	if (!session) {
-		return redirect('/sign-in')
-	}
-
 	return <DashboardClient />
 }

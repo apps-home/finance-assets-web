@@ -1,9 +1,16 @@
 'use client'
 
+import { useQuery } from '@tanstack/react-query'
 import { Edit2, PlusIcon, Trash2 } from 'lucide-react'
 import { useState } from 'react'
 import { toast } from 'sonner'
 
+import {
+	createCategory,
+	deleteCategory,
+	listCategories,
+	updateCategory
+} from '@/api/categories'
 import { Button } from '@/components/ui/button'
 import {
 	Card,
@@ -37,8 +44,6 @@ import {
 	TableHeader,
 	TableRow
 } from '@/components/ui/table'
-import { createCategory, deleteCategory, listCategories, updateCategory } from '@/api/categories'
-import { useQuery } from '@tanstack/react-query'
 
 interface Category {
 	id: string
@@ -54,13 +59,12 @@ const CURRENCIES = [
 ]
 
 export function CategoryManager() {
-	
-	const {data: categoriesData} = useQuery({
+	const { data: categoriesData } = useQuery({
 		queryKey: ['categories'],
 		queryFn: async () => {
 			const data = await listCategories()
-				return data
-		}	
+			return data
+		}
 	})
 
 	const categories = categoriesData || []
@@ -102,7 +106,11 @@ export function CategoryManager() {
 				name: formData.name,
 				currency: formData.currency
 			}
-			await updateCategory(editingCategory.id, updatedCategory)
+
+			await updateCategory(editingCategory.id, {
+				currency: updatedCategory.currency,
+				name: updatedCategory.name
+			})
 
 			toast.success('Categoria atualizada com sucesso!')
 		} else {
@@ -242,9 +250,13 @@ export function CategoryManager() {
 								<SelectTrigger id="category-currency">
 									<SelectValue placeholder="Selecione a moeda" />
 								</SelectTrigger>
-								<SelectContent>
+								<SelectContent className="w-full">
 									{CURRENCIES.map((currency) => (
-										<SelectItem key={currency.value} value={currency.value}>
+										<SelectItem
+											key={currency.value}
+											value={currency.value}
+											className="mx-2 py-4"
+										>
 											{currency.label}
 										</SelectItem>
 									))}

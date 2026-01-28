@@ -1,6 +1,6 @@
 import type { User } from 'better-auth'
 
-import { apiClient } from '@/shared/lib/axios-client'
+import { apiClient } from '@/shared/services/axios-client'
 
 export async function updateUser(
 	id: string,

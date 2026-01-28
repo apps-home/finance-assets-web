@@ -1,9 +1,9 @@
 import { env } from '@finance-assets-web/env/web'
 import axios, { type AxiosError } from 'axios'
 
-import type { ApiErrorResponse } from './api-error'
-import { ErrorCode, parseApiError } from './api-error'
-import { authClient, signOut } from './auth-client'
+import { authClient, signOut } from '../lib/auth-client'
+import type { ApiErrorResponse } from '../utils/api-error'
+import { ErrorCode, parseApiError } from '../utils/api-error'
 
 export const apiClient = axios.create({
 	baseURL: env.NEXT_PUBLIC_SERVER_URL,

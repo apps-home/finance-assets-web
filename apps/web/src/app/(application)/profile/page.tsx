@@ -1,7 +1,7 @@
 import type { Metadata } from 'next'
 import { redirect } from 'next/navigation'
 
-import { getCurrentSession } from '@/shared/lib/current-user'
+import { getCurrentUser } from '@/shared/lib/current-user'
 
 import ProfileClient from './ProfileClient'
 
@@ -10,17 +10,17 @@ interface ProfilePageProps {
 }
 
 export default async function ProfilePage({ searchParams }: ProfilePageProps) {
-	const session = await getCurrentSession()
+	const user = await getCurrentUser()
 	const resolvedSearchParams = await searchParams
 
-	if (!session) {
+	if (!user) {
 		redirect('/sign-in')
 	}
 
 	return (
 		<main>
 			<ProfileClient
-				user={session.user}
+				user={user}
 				defaultTab={resolvedSearchParams.tab || 'perfil'}
 			/>
 		</main>

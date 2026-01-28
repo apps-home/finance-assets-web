@@ -24,3 +24,36 @@ export const auth = betterAuth({
 })
 
 export default auth
+
+export const {
+	accountInfo,
+	callbackOAuth,
+	changeEmail,
+	changePassword,
+	deleteUser,
+	deleteUserCallback,
+	error,
+	getAccessToken,
+	getSession,
+	linkSocialAccount,
+	listSessions,
+	listUserAccounts,
+	ok,
+	refreshToken,
+	requestPasswordReset,
+	requestPasswordResetCallback,
+	resetPassword,
+	revokeOtherSessions,
+	revokeSession,
+	revokeSessions,
+	sendVerificationEmail,
+	setPassword,
+	signInEmail,
+	signInSocial,
+	signOut,
+	signUpEmail,
+	unlinkAccount,
+	updateUser,
+	verifyEmail,
+	verifyPassword
+} = auth.api

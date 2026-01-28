@@ -2,6 +2,7 @@
 
 import { LogOut, User } from 'lucide-react'
 import Link from 'next/link'
+import { useRouter } from 'next/navigation'
 
 import { Button } from '@/components/ui/button'
 import {
@@ -13,11 +14,33 @@ import {
 	DropdownMenuSeparator,
 	DropdownMenuTrigger
 } from '@/components/ui/dropdown-menu'
+import { signOut, useSession } from '@/shared/lib/auth-client'
 
 export function ProfileMenu() {
-	const user = {
-		name: 'Usuário Exemplo',
-		email: 'usuario@exemplo.com'
+	const router = useRouter()
+
+	const { error, data: userData, isPending } = useSession()
+
+	const UserHeader = () => {
+		if (error || isPending || !userData) {
+			return (
+				<div className="flex flex-col space-y-1">
+					<p className="animate-pulse font-medium text-sm leading-none" />
+					<p className="animate-pulse text-muted-foreground text-xs leading-none" />
+				</div>
+			)
+		}
+
+		const { user } = userData
+
+		return (
+			<div className="flex flex-col space-y-2">
+				<p className="font-medium text-sm leading-none">{user.name}</p>
+				<p className="text-muted-foreground text-xs leading-none">
+					{user.email}
+				</p>
+			</div>
+		)
 	}
 
 	return (
@@ -37,12 +60,7 @@ export function ProfileMenu() {
 			<DropdownMenuContent className="w-56" align="end">
 				<DropdownMenuGroup>
 					<DropdownMenuLabel className="font-normal">
-						<div className="flex flex-col space-y-1">
-							<p className="font-medium text-sm leading-none">{user.name}</p>
-							<p className="text-muted-foreground text-xs leading-none">
-								{user.email}
-							</p>
-						</div>
+						<UserHeader />
 					</DropdownMenuLabel>
 				</DropdownMenuGroup>
 				<DropdownMenuSeparator />
@@ -57,7 +75,14 @@ export function ProfileMenu() {
 					variant="destructive"
 					className="py-4"
 					onClick={() => {
-						console.log('Lógica de logout aqui')
+						signOut({
+							fetchOptions: {
+								onSuccess: () => {
+									router.replace('/sign-in')
+									router.refresh()
+								}
+							}
+						})
 					}}
 				>
 					<LogOut className="mr-2 h-4 w-4" />

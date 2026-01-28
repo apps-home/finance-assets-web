@@ -1,4 +1,4 @@
-import { apiClient } from '@/shared/lib/axios-client'
+import { apiClient } from '@/shared/services/axios-client'
 
 import type {
 	Budget,

@@ -11,4 +11,29 @@ export const authClient = createAuthClient({
 	baseURL: getBaseURL()
 })
 
-export const { signIn, signUp, signOut, useSession } = authClient
+export const {
+	$ERROR_CODES,
+	accountInfo,
+	changeEmail,
+	changePassword,
+	deleteUser,
+	getAccessToken,
+	getSession,
+	linkSocial,
+	listAccounts,
+	listSessions,
+	refreshToken,
+	requestPasswordReset,
+	resetPassword,
+	revokeOtherSessions,
+	revokeSession,
+	revokeSessions,
+	sendVerificationEmail,
+	signIn,
+	signOut,
+	signUp,
+	unlinkAccount,
+	updateUser,
+	useSession,
+	verifyEmail
+} = authClient
